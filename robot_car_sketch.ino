@@ -1,10 +1,11 @@
 
-#define leftMotorPin1 9 //Pin number for left Motor
-#define leftMotorPin2 8 //Pin number for left Motor
+#define leftMotorPin 12 //Pin number for left Motor
+#define leftMotorPinAna 3 //Pin number for left analog control
+#define leftMotorPinStop 9 //Pin number for left Motor stop
 
-#define rightMotorPin1 13 // Pin number for right Motor
-#define rightMotorPin2 12 // Pin number for right Motor
-
+#define rightMotorPin 13 //Pin number for right Motor
+#define rightMotorPinAna 11 //Pin number for right analog control
+#define rightMotorPinStop 8 //Pin number for right Motor stop
 
 #define trigPin 2
 #define echoPin 4
@@ -16,11 +17,13 @@ long duration, cm, inches;
 
 void setup() {
 
-  pinMode(leftMotorPin1, OUTPUT);
-  pinMode(leftMotorPin2, OUTPUT);
+  pinMode(leftMotorPin,OUTPUT);
+  pinMode(leftMotorPinAna,OUTPUT);
+  pinMode(leftMotorPinStop,OUTPUT);
   
-  pinMode(rightMotorPin1, OUTPUT);
-  pinMode(rightMotorPin2, OUTPUT);
+  pinMode(rightMotorPin,OUTPUT);
+  pinMode(rightMotorPinAna,OUTPUT);
+  pinMode(rightMotorPinStop,OUTPUT);
   
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
@@ -57,56 +60,65 @@ void loop()
 }//ends loop
 
 void goForward(){
-  digitalWrite(leftMotorPin1,HIGH);
-  digitalWrite(leftMotorPin2,LOW);
-  
-  digitalWrite(rightMotorPin1, HIGH);
-  digitalWrite(rightMotorPin2, LOW);
+	
+	digitalWrite(leftMotorPinStop,LOW);
+	digitalWrite(leftMotorPin,HIGH);
+	digitalWrite(leftMotorPinAna,250);
+	
+	digitalWrite(rightMotorPinStop,LOW);
+	digitalWrite(rightMotorPin, HIGH);
+	digitalWrite(rightMotorPinAna, 250);
+	
 }
 
 void goBackward(){
-  digitalWrite(leftMotorPin1, LOW);
-  digitalWrite(leftMotorPin2, HIGH);
-
-  digitalWrite(rightMotorPin1, LOW);
-  digitalWrite(rightMotorPin2, HIGH);
+	
+	digitalWrite(leftMotorPinStop,LOW);
+	digitalWrite(leftMotorPin,LOW);
+	digitalWrite(leftMotorPinAna,150);
+	
+	digitalWrite(rightMotorPinStop,LOW);
+	digitalWrite(rightMotorPin, LOW);
+	digitalWrite(rightMotorPinAna, 150);
+	
 }
 
 void turnLeft(){
-  digitalWrite(leftMotorPin1, LOW);
-  digitalWrite(leftMotorPin2, LOW);
-
-  digitalWrite(rightMotorPin1, HIGH);
-  digitalWrite(rightMotorPin2, LOW);
+	
+	digitalWrite(leftMotorPin,HIGH);
+	digitalWrite(leftMotorPinAna,250);
+	digitalWrite(leftMotorPinStop,LOW);
+  
+	digitalWrite(rightMotorPinStop,HIGH);
 }
 
 void turnRight(){
-  digitalWrite(leftMotorPin1, HIGH);
-  digitalWrite(leftMotorPin2, LOW);
-
-  digitalWrite(rightMotorPin1, LOW);
-  digitalWrite(rightMotorPin2, LOW);
+	
+	digitalWrite(leftMotorPinStop,HIGH);
+  
+	digitalWrite(rightMotorPin, HIGH);
+	digitalWrite(rightMotorPinAna, 250);
+	digitalWrite(rightMotorPinStop,LOW);
 }
 
 void comeToStop(){
-  digitalWrite(leftMotorPin1, LOW);
-  digitalWrite(leftMotorPin2, LOW);
-
-  digitalWrite(rightMotorPin1, LOW);
-  digitalWrite(rightMotorPin2, LOW);  
+	
+	digitalWrite(leftMotorPinStop,HIGH);
+	digitalWrite(rightMotorPinStop,HIGH);  
 }
 
 int distanceIn(){
-  digitalWrite(trigPin, LOW);
-  delayMicroseconds(2);
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(4);
-  digitalWrite(trigPin, LOW);
+	
+	digitalWrite(trigPin, LOW);
+	delayMicroseconds(2);
+	digitalWrite(trigPin, HIGH);
+	delayMicroseconds(4);
+	digitalWrite(trigPin, LOW);
 
-  pinMode(echoPin, INPUT);
-  duration = pulseIn(echoPin, HIGH);
+	pinMode(echoPin, INPUT);
+	duration = pulseIn(echoPin, HIGH);
 
-  // converts the time to a distance
-  inches = (duration / 2) / 74;
-  return inches;
+	// converts the time to a distance
+	inches = (duration / 2) / 74;
+	return inches;
 }
